@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoDrive - Vehicle Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Add Three.js and required libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Remove MapboxGL -->
+</head>
+<body class="dashboard-body">
+    <nav class="navbar">
+        <div class="logo">EcoDrive</div>
+        <ul class="nav-links">
+            <li><a href="index1.html">Home</a></li>
+            <li><a href="#dashboard" class="active">Dashboard</a></li>
+            <li><a href="#routes">Route Planning</a></li>
+            <li><a href="#safety">Safety</a></li>
+            <li><a href="#eco">Eco Insights</a></li>
+        </ul>
+        <div class="user-profile">
+            <img src="https://ui-avatars.com/api/?name=John+Doe&background=2ecc71&color=fff" alt="User Profile">
+            <span>John Doe</span>
+        </div>
+    </nav>
+
+    <main class="dashboard-main">
+        <section id="dashboard" class="section">
+            <div class="dashboard-header">
+                <h1>Vehicle Dashboard</h1>
+                <div class="vehicle-selector">
+                    <select id="vehicleSelect">
+                        <option value="tesla-model3">Tesla Model 3</option>
+                        <option value="nissan-leaf">Nissan Leaf</option>
+                        <option value="chevy-bolt">Chevy Bolt</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card battery-card">
+                    <div class="card-header">
+                        <h3>Battery Status</h3>
+                        <i class="fas fa-battery-three-quarters"></i>
+                    </div>
+                    <div class="battery-indicator">
+                        <div class="battery-level" style="width: 75%"></div>
+                    </div>
+                    <div class="battery-details">
+                        <p class="battery-percentage">75% Charged</p>
+                        <p class="range">Estimated Range: 285 km</p>
+                    </div>
+                </div>
+
+                <div class="card speed-card">
+                    <div class="card-header">
+                        <h3>Current Speed</h3>
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="speed-display">
+                        <span class="speed">45</span>
+                        <span class="unit">km/h</span>
+                    </div>
+                    <div class="speed-details">
+                        <p>Average Speed: 42 km/h</p>
+                        <p>Max Speed: 120 km/h</p>
+                    </div>
+                </div>
+
+                <div class="card distance-card">
+                    <div class="card-header">
+                        <h3>Distance Covered</h3>
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="distance-display">
+                        <span class="distance">127.5</span>
+                        <span class="unit">km</span>
+                    </div>
+                    <div class="distance-details">
+                        <p>Today's Trip: 45.2 km</p>
+                        <p>Total Distance: 12,450 km</p>
+                    </div>
+                </div>
+
+                <div class="card eco-card">
+                    <div class="card-header">
+                        <h3>Eco Score</h3>
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="eco-score">
+                        <div class="score-circle">
+                            <span>85</span>
+                            <span class="score-label">/100</span>
+                        </div>
+                    </div>
+                    <div class="eco-details">
+                        <p>Energy Efficiency: 0.15 kWh/km</p>
+                        <p>CO₂ Saved: 2.5 kg today</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-stats">
+                <div class="stat-item">
+                    <i class="fas fa-temperature-high"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">24°C</span>
+                        <span class="stat-label">Outside Temperature</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">2.5 hrs</span>
+                        <span class="stat-label">Drive Time Today</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-bolt"></i>
+                    <div class="stat-info">
+                        <span class="stat-value">12.4 kWh</span>
+                        <span class="stat-label">Energy Used</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="routes" class="section">
+            <h2>Vehicle Simulation Environment</h2>
+            <div class="route-planner">
+                <div class="route-container">
+                    <div class="simulation-view">
+                        <div id="vehicle-3d-view"></div>
+                        <!-- Removed view controls -->
+                    </div>
+                    <div class="route-controls">
+                        <div class="vehicles-list">
+                            <h3>Select Vehicles</h3>
+                            <div class="vehicle-selector">
+                                <div class="vehicle-item">
+                                    <input type="checkbox" id="tesla-model3" name="vehicle" value="tesla-model3" checked>
+                                    <label for="tesla-model3">Tesla Model 3</label>
+                                    <div class="vehicle-preview"></div>
+                                </div>
+                                <div class="vehicle-item">
+                                    <input type="checkbox" id="nissan-leaf" name="vehicle" value="nissan-leaf">
+                                    <label for="nissan-leaf">Nissan Leaf</label>
+                                    <div class="vehicle-preview"></div>
+                                </div>
+                                <div class="vehicle-item">
+                                    <input type="checkbox" id="mahindra-thar" name="vehicle" value="mahindra-thar">
+                                    <label for="mahindra-thar">Mahindra Thar</label>
+                                    <div class="vehicle-preview"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="route-inputs">
+                            <div class="waypoints">
+                                <div class="input-group">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <label for="start-location">Start:</label>
+                                    <select id="start-location" class="route-select"></select>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-flag-checkered"></i>
+                                    <label for="end-location">End:</label>
+                                    <select id="end-location" class="route-select"></select>
+                                </div>
+                                <!-- Waypoints removed for simplicity, can be re-added -->
+                            </div>
+                        </div>
+                        <div class="route-options">
+                            <h3>Simulation Options</h3>
+                            <label class="option">
+                                <input type="checkbox" id="optimize-battery" checked>
+                                <span>Simulate battery efficiency</span>
+                            </label>
+                            <!-- Removed Avoid Highways / Charging stops -->
+                            <div class="simulation-speed">
+                                <label for="sim-speed">Simulation Speed:</label>
+                                <input type="range" id="sim-speed" min="1" max="20" value="5">
+                            </div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-primary" onclick="routePlanner.startSimulation()">Start Simulation</button>
+                            <button class="btn-secondary" onclick="routePlanner.pauseSimulation()">Pause</button>
+                            <button class="btn-secondary" onclick="routePlanner.resetSimulation()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="route-info">
+                    <div class="info-panel">
+                        <h3>Simulation Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Distance Driven</span>
+                                <span class="stat-value" id="total-distance">0.0 km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Elapsed Time</span>
+                                <span class="stat-value" id="elapsed-time">0s</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Energy Used</span>
+                                <span class="stat-value" id="energy-usage">0.0 kWh</span>
+                            </div>
+                             <div class="stat-item">
+                                <span class="stat-label">Current Speed</span>
+                                <span class="stat-value" id="current-speed">0 km/h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="safety" class="section">
+            <h2>Safety Features</h2>
+            <div class="safety-grid">
+                <div class="safety-card">
+                    <div class="safety-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Collision Prevention</h3>
+                    <p class="status active">Active</p>
+                    <div class="safety-details">
+                        <p>Last checked: 2 mins ago</p>
+                        <p>Response time: 0.2s</p>
+                    </div>
+                </div>
+                <div class="safety-card">
+                    <div class="safety-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Obstacle Detection</h3>
+                    <p class="status">No obstacles detected</p>
+                    <div class="safety-details">
+                        <p>Range: 150m</p>
+                        <p>Sensors: 8 active</p>
+                    </div>
+                </div>
+                <div class="safety-card">
+                    <div class="safety-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Emergency Alerts</h3>
+                    <p class="status active">System ready</p>
+                    <div class="safety-details">
+                        <p>Last test: 1 day ago</p>
+                        <p>Response time: 0.1s</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="eco" class="section">
+            <h2>Eco-Friendly Insights</h2>
+            <div class="eco-grid">
+                <div class="eco-card">
+                    <h3>Energy Efficiency</h3>
+                    <canvas id="efficiencyChart"></canvas>
+                    <div class="chart-legend">
+                        <span class="legend-item">
+                            <i class="fas fa-circle" style="color: #2ecc71"></i>
+                            Today
+                        </span>
+                        <span class="legend-item">
+                            <i class="fas fa-circle" style="color: #95a5a6"></i>
+                            Average
+                        </span>
+                    </div>
+                </div>
+                <div class="eco-card">
+                    <h3>Carbon Footprint</h3>
+                    <div class="carbon-stats">
+                        <div class="stat-row">
+                            <span>Today's Savings</span>
+                            <span class="value">2.5 kg CO₂</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Monthly Savings</span>
+                            <span class="value">45.8 kg CO₂</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Monthly Goal</span>
+                                <span>65%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="vehicle-models.js"></script>
+    <script src="route-planner.js"></script>
+    <!-- <script src="script.js"></script> Removed conflicting script -->
+</body>
+</html> 
